@@ -836,6 +836,53 @@ class MultiPropertyAutomation:
         try:
             print(f"   💳 결제 처리 중...")
 
+            # KCB, KB, AI 추가 광고 채널 해제 (기본 체크되어 있는 상태를 해제)
+            print("   🔌 추가 광고 채널(KCB, KB, AI) 해제 시도 중...")
+            try:
+                await page.evaluate('''
+                    () => {
+                        const channels = ['kcb', 'kb', 'ai'];
+                        channels.forEach(ch => {
+                            let label = null;
+                            if (ch === 'kcb') {
+                                label = document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.kcb > div > label');
+                            } else if (ch === 'kb') {
+                                label = document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.kb > div > label') ||
+                                        document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.kb');
+                            } else if (ch === 'ai') {
+                                label = document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.ai > div > label');
+                            }
+                            
+                            if (!label) {
+                                label = document.querySelector(`.channel.${ch} label`) || 
+                                        document.querySelector(`.channel.${ch}`);
+                            }
+                            
+                            if (label) {
+                                const input = label.querySelector('input[type="checkbox"]') || 
+                                              document.querySelector(`.channel.${ch} input[type="checkbox"]`);
+                                
+                                if (input) {
+                                    if (input.checked) {
+                                        label.click();
+                                        console.log(`[Automation] ${ch.toUpperCase()} 채널 체크 해제 성공 (체크 확인됨)`);
+                                    } else {
+                                        console.log(`[Automation] ${ch.toUpperCase()} 채널은 이미 체크 해제되어 있습니다.`);
+                                    }
+                                } else {
+                                    label.click();
+                                    console.log(`[Automation] ${ch.toUpperCase()} 채널 클릭 수행 (무조건 해제 시도)`);
+                                }
+                            } else {
+                                console.log(`[Automation] ${ch.toUpperCase()} 채널 요소를 찾을 수 없습니다.`);
+                            }
+                        });
+                    }
+                ''');
+                print("   ✅ 추가 광고 채널(KCB, KB, AI) 해제 처리 완료")
+            except Exception as ce:
+                print(f"   ⚠️ 추가 광고 채널 해제 중 오류 발생 (계속 진행): {ce}")
+
             # 체크박스 클릭
             checkbox_checked = False
             for attempt in range(3):
@@ -1065,6 +1112,53 @@ class MultiPropertyAutomation:
 
             # 3. 결제 처리
             print("3️⃣ 결제 처리...")
+
+            # KCB, KB, AI 추가 광고 채널 해제 (기본 체크되어 있는 상태를 해제)
+            print("   🔌 추가 광고 채널(KCB, KB, AI) 해제 시도 중...")
+            try:
+                await page.evaluate('''
+                    () => {
+                        const channels = ['kcb', 'kb', 'ai'];
+                        channels.forEach(ch => {
+                            let label = null;
+                            if (ch === 'kcb') {
+                                label = document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.kcb > div > label');
+                            } else if (ch === 'kb') {
+                                label = document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.kb > div > label') ||
+                                        document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.kb');
+                            } else if (ch === 'ai') {
+                                label = document.querySelector('#wrap > div > div > div > div.sectionWrap > div:nth-child(6) > div.channel-list > div.channel.ai > div > label');
+                            }
+                            
+                            if (!label) {
+                                label = document.querySelector(`.channel.${ch} label`) || 
+                                        document.querySelector(`.channel.${ch}`);
+                            }
+                            
+                            if (label) {
+                                const input = label.querySelector('input[type="checkbox"]') || 
+                                              document.querySelector(`.channel.${ch} input[type="checkbox"]`);
+                                
+                                if (input) {
+                                    if (input.checked) {
+                                        label.click();
+                                        console.log(`[Automation] ${ch.toUpperCase()} 채널 체크 해제 성공 (체크 확인됨)`);
+                                    } else {
+                                        console.log(`[Automation] ${ch.toUpperCase()} 채널은 이미 체크 해제되어 있습니다.`);
+                                    }
+                                } else {
+                                    label.click();
+                                    console.log(`[Automation] ${ch.toUpperCase()} 채널 클릭 수행 (무조건 해제 시도)`);
+                                }
+                            } else {
+                                console.log(`[Automation] ${ch.toUpperCase()} 채널 요소를 찾을 수 없습니다.`);
+                            }
+                        });
+                    }
+                ''');
+                print("   ✅ 추가 광고 채널(KCB, KB, AI) 해제 처리 완료")
+            except Exception as ce:
+                print(f"   ⚠️ 추가 광고 채널 해제 중 오류 발생 (계속 진행): {ce}")
 
             # 체크박스 클릭
             checkbox_checked = False
